@@ -1,0 +1,12 @@
+{% extends 'package1/layout.html' %}
+
+{% block body %}
+<h1>Login Here</h1>
+
+<form action="" method="post">
+    {% csrf_token %}
+    {{LoginForm.as_p}}
+    <input type="submit" value="Login">
+</form>
+
+{% endblock %}
