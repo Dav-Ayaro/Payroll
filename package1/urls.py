@@ -1,5 +1,6 @@
 from django.urls import path
 from . views import *
+from . authority import *
 
 urlpatterns = [
     path('', index, name='index_view'),

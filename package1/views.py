@@ -10,64 +10,7 @@ from django.utils import timezone
 import random, string
 from django.core.exceptions import ObjectDoesNotExist
 from urllib.parse import urlencode
-from flask import Flask, render_template, redirect, url_for
-from authority import login, logout, is_authorized
 # Create your views here.
-
-#some test to be done here
-app = Flask(__name__)
-app.secret_key = "__"
-
-@app.route("/")
-def home():
-    return render_template("home.html")
-
-@app.route("/dashboard")
-def dashboard():
-    if not is_authorized("dashboard"):
-        return "Access Denied"
-    return render_template("dashboard.html")
-
-@app.route("/content_management")
-def content_management():
-    if not is_authorized("content_management"):
-        return "Access Denied"
-    return render_template("content_management.html")
-
-@app.route("/reports")
-def reports():
-    if not is_authorized("reports"):
-        return "Access Denied"
-    return render_template("reports.html")
-
-@app.route("/issue_payment")
-def issue_payment():
-    if not is_authorized("issue_payment"):
-        return "Access Denied"
-    return render_template("i_payment.html")
-
-
-@app.route()
-
-
-
-@app.route("/login/<username>")
-def login_route(username):
-    login(username)
-    return redirect(url_for("home"))
-
-@app.route("/logout")
-def logout_route():
-    logout()
-    return redirect(url_for("home"))
-
-if __name__ == "__main__":
-    app.run(debug=True)
-
-
-#end of the test
-
-
 
 class UserRoles:
     @staticmethod
