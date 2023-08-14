@@ -10,7 +10,64 @@ from django.utils import timezone
 import random, string
 from django.core.exceptions import ObjectDoesNotExist
 from urllib.parse import urlencode
+from flask import Flask, render_template, redirect, url_for
+from authority import login, logout, is_authorized
 # Create your views here.
+
+#some test to be done here
+app = Flask(__name__)
+app.secret_key = "__"
+
+@app.route("/")
+def home():
+    return render_template("home.html")
+
+@app.route("/dashboard")
+def dashboard():
+    if not is_authorized("dashboard"):
+        return "Access Denied"
+    return render_template("dashboard.html")
+
+@app.route("/content_management")
+def content_management():
+    if not is_authorized("content_management"):
+        return "Access Denied"
+    return render_template("content_management.html")
+
+@app.route("/reports")
+def reports():
+    if not is_authorized("reports"):
+        return "Access Denied"
+    return render_template("reports.html")
+
+@app.route("/issue_payment")
+def issue_payment():
+    if not is_authorized("issue_payment"):
+        return "Access Denied"
+    return render_template("i_payment.html")
+
+
+@app.route()
+
+
+
+@app.route("/login/<username>")
+def login_route(username):
+    login(username)
+    return redirect(url_for("home"))
+
+@app.route("/logout")
+def logout_route():
+    logout()
+    return redirect(url_for("home"))
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+
+#end of the test
+
+
 
 class UserRoles:
     @staticmethod
@@ -34,7 +91,6 @@ accountant_required = user_passes_test(UserRoles.is_accountant, login_url='login
 hr_required = user_passes_test(UserRoles.is_hr, login_url='login')
 manager_required = user_passes_test(UserRoles.is_manager, login_url='login')
 admin_required = user_passes_test(UserRoles.is_admin, login_url='login')
-
 
 
 
@@ -92,15 +148,23 @@ class systemRequirements():
     
 class RenderUrls(systemRequirements):
     
-    def unkown_user(self, request):
-        return None
+    def not_superuser(self,request):
+        if request.user.is_accountant:
+            return 'Accountant_view'
+        elif request.user.is_admin:
+            return 'auth_view'
+        elif request.user.is_hr:
+            return 'hr_view'
+        elif request.user.is_manager:
+            return 'manager_view'
+
 
 object = RenderUrls()
 
 
 def is_accountant(user):
     return user.groups.filter(name='Accountant').exists()
-    
+
 def is_manager(user):
     return user.groups.filter(name='Manager').exists()
 def is_hr(user):
@@ -121,6 +185,8 @@ def index(request):
                         return HttpResponseRedirect(next)
                     elif request.user.is_superuser:
                         return HttpResponseRedirect('/admin/')
+                    elif request.user.is_staff:
+                        return HttpResponseRedirect(reverse('auth_view'))
                     elif is_accountant:
                         return HttpResponseRedirect(reverse('Accountant_view'))
                     elif is_manager:
