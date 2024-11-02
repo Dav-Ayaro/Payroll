@@ -1,6 +1,10 @@
 {% extends 'package1/extension/layout.html' %}
 
 {% block body %}
+<a href="{% url 'index_view'%}">Login</a> 
+
+<a href="{% url 'registration_view' %}">Register</a>
+
 <h1>Login Here</h1>
 
 <form action="" method="post">
@@ -8,5 +12,6 @@
     {{LoginForm.as_p}}
     <input type="submit" value="Login">
 </form>
+
 
 {% endblock %}

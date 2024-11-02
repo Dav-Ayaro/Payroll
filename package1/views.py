@@ -139,15 +139,20 @@ def index(request):
         'LoginForm':LoginForm(), 'wrong_credentials':wrong_credentials
     })
 
-# @login_required
-# @user_passes_test(is_accountant)
-# def accountant_view(request):
-#     return render(request, 'accountant_template.html')
+def registration_view(request):
+    return render(request, 'package1/register.html',{
+        'AddUserForm':AddUserForm()
+    })
 
-# @login_required
-# @user_passes_test(is_manager)
-# def manager_view(request):
-#     return render(request, 'manager_template.html')
+@login_required
+@user_passes_test(is_accountant)
+def accountant_view(request):
+    return render(request, 'accountant_template.html')
+
+@login_required
+@user_passes_test(is_manager)
+def manager_view(request):
+    return render(request, 'manager_template.html')
 
 #accountant pages will be processed here
 @accountant_required
@@ -168,6 +173,7 @@ def manager_view(request):
 @admin_required
 def admin_view(request):
     return render(request, 'admin_view.html')
+
 
 def logout_page(request):
     logout(request)

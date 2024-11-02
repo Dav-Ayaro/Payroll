@@ -1,0 +1,13 @@
+{% extends 'package1/extension/layout.html' %}
+
+{% block body %}
+<a href="">Login</a> <a href="">Register</a>
+
+<h1> Signup here! </h1>
+<form action="" method="post">
+    {% csrf_token %}
+    {{AddUserForm.as.p}}
+    <input type="submit" value="Register">
+</form>
+
+{% endblock %}
