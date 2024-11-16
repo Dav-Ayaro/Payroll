@@ -140,8 +140,11 @@ def index(request):
     })
 
 def registration_view(request):
+    if request.method == "POST":
+        capture_form_data = AddUserForm(request.POST)
+        if capture_form_dat.is_valid():
+            adduser = 
     return render(request, 'package1/register.html',{
-        'AddUserForm':AddUserForm()
     })
 
 @login_required

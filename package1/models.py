@@ -45,3 +45,4 @@ class HumanResource(models.Model):
 
 class accountant(models.Model):
     info = models.ForeignKey(Payroll, on_delete=models.CASCADE, related_name='account_info')
+
